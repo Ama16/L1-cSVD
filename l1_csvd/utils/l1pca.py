@@ -1,6 +1,6 @@
 import numpy as np
 import numpy.linalg as LA
-
+from time import time
 
 def NextComb(l):
     """Get next value of binary value represented as vector {+-1}^{n}.
@@ -31,18 +31,24 @@ def BNM(X, k):
     """
     n = X.shape[1]
     tempB = np.array([1] * (n * k))
-    sum_sv = 0
+    sum_sv = -1e6
     Last_B = np.array([-1] * (n * k))
-
-    while sum(tempB == Last_B) != (n * k):
+    
+    i = 0
+    last = 0
+    # print("L1pca start")
+    b = time()
+    for _ in range(10 ** 4):
+        i += 1
+        tempB = np.random.choice([1, -1], size=n*k)
         tempB.shape = (n, k)
         temp_sum_sv = sum(LA.svd(np.dot(X, tempB))[1])
         if sum_sv < temp_sum_sv:
             sum_sv = temp_sum_sv
             B = tempB.copy()
-        tempB.shape = n * k
-        tempB = NextComb(tempB)
-
+            cur_time = time() - b
+            # print("BNM Iter: {} | -Loss: {} | Time spend (min): {}".format(i, sum_sv, cur_time / 60))
+    # print()
     return B
 
 
