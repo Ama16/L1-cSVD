@@ -1,3 +1,4 @@
+import torch
 import numpy as np
 
 
@@ -44,7 +45,7 @@ def Mah_dist(U, M, S, y):
 
 
 def NR(N, S):
-    return (S ** 2).sum() / (N ** 2).sum()
+    return (N ** 2).sum() / (S ** 2).sum()
 
 def R_sv(S_est, S_clean):
     return np.sqrt(((S_est - S_clean) ** 2).sum()) / np.sqrt((S_clean ** 2).sum())
